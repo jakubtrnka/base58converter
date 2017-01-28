@@ -48,7 +48,7 @@ void ascii2base58( std::istream & ist, std::ostream & ost )
         ost << std::endl;
 }
 
-int bLetter( const char c )
+static int bLetter( const char c )
 {
         int i(0);
         while ( b58[i] != '\0' )

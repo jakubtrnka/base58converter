@@ -4,7 +4,7 @@
 
 static const char * b58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 
-int hLetter( const char c )
+static int hLetter( const char c )
 {
 	const char * hex = "0123456789abcdef0123456789ABCDEF";
         int i(0);
@@ -33,7 +33,7 @@ void hexa2base58( std::istream & ist, std::ostream & ost )
                 for ( int i=0; i<imax; i++ )
 		{
 			if ( buff[ i ] == '\n' ) break;
-			tmp = hLetter( buff[ i ] );
+			int tmp = hLetter( buff[ i ] );
 			if ( tmp == -1 ) throw "chyba inputu";
                         data.push_back( (int) buff[ i ] );
 		}
@@ -68,7 +68,7 @@ void hexa2base58( std::istream & ist, std::ostream & ost )
 }
 
 
-int bLetter( const char c )
+static int bLetter( const char c )
 {
         int i(0);
         while ( b58[i] != '\0' )
