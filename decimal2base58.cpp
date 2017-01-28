@@ -2,7 +2,22 @@
 #include <cctype>
 #include <vector>
 
-static const char * b58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+namespace
+{
+	const char * b58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+
+        int bLetter( const char c )
+        {
+                int i(0);
+                while ( b58[i] != '\0' )
+                {
+                        if ( b58[ i ] == c )
+                                return i;
+                        i++;
+                }
+                return -1;
+        }
+}
 
 void decimal2base58( std::istream & ist, std::ostream & ost )
 {
@@ -47,18 +62,6 @@ void decimal2base58( std::istream & ist, std::ostream & ost )
                 inp++;
         }
         ost << std::endl;
-}
-
-static int bLetter( const char c )
-{
-        int i(0);
-        while ( b58[i] != '\0' )
-        {
-                if ( b58[ i ] == c )
-                        return i;
-                i++;
-        }
-        return -1;
 }
 
 void base58toDecimal( std::istream & ist, std::ostream & ost )
