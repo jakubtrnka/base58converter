@@ -72,7 +72,15 @@ void hex2base58( std::istream & ist, std::ostream & ost )
                 }
         }
         auto inp=outputnum.crbegin();
-        while ( *inp == 0 ) inp++;
+        while ( *inp == 0 )
+        {
+                if ( inp == outputnum.crend() )
+                {
+                        ost << 1;
+                        break;
+                }
+                inp++;
+        }
         while ( inp != outputnum.crend() )
         {
                 ost << b58[ *inp ];
@@ -120,7 +128,15 @@ void base58toHex( std::istream & ist, std::ostream & ost )
                 }
         }
         auto inp=outputnum.crbegin();
-        while ( *inp == 0 ) inp++;
+        while ( *inp == 0 )
+        {
+                if ( inp == outputnum.crend() )
+                {
+                        ost << 0;
+                        break;
+                }
+                inp++;
+        }
         while ( inp != outputnum.crend() )
         {
                 ost << hx[ *inp ] ;

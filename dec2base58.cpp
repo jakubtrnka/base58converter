@@ -4,7 +4,7 @@
 
 namespace
 {
-	const char * b58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+        const char * b58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 
         int bLetter( const char c )
         {
@@ -51,11 +51,18 @@ void dec2base58( std::istream & ist, std::ostream & ost )
                         (*oup) += carry;
                         carry = (*oup) / 58;
                         (*oup) %= 58;
-                        //std::cout << "-----" << i << "<<<<<";
                 }
         }
         auto inp=outputnum.crbegin();
-        while ( *inp == 0 ) inp++;
+        while ( *inp == 0 )
+        {
+                if ( inp == outputnum.crend() )
+                {
+                        ost << 1;
+                        break;
+                }
+                inp++;
+        }
         while ( inp != outputnum.crend() )
         {
                 ost << b58[ *inp ];
@@ -101,7 +108,15 @@ void base58toDec( std::istream & ist, std::ostream & ost )
                 }
         }
         auto inp=outputnum.crbegin();
-        while ( *inp == 0 ) inp++;
+        while ( *inp == 0 )
+        {
+                if ( inp == outputnum.crend() )
+                {
+                        ost << 0;
+                        break;
+                }
+                inp++;
+        }
         while ( inp != outputnum.crend() )
         {
                 ost << *inp;

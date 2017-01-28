@@ -2,9 +2,21 @@
 #include <cctype>
 #include <vector>
 
+#include "bip39.h"
+
+/*
 namespace
 {
-	const char * b58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+        const char * bip_english = {
+                "abandon", "ability", "able", "about", "above",
+                "absent", "absorb", "abstract", "absurd", "abuse",
+                "access", "accident", "account", "accuse", "achieve",
+                "acid", "acoustic", "acquire", "across", "act",
+*/
+
+namespace
+{
+        const char * b58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 
         int bLetter( const char c )
         {
@@ -19,7 +31,8 @@ namespace
         }
 }
 
-void decimal2base58( std::istream & ist, std::ostream & ost )
+/*
+void czech2base58( std::istream & ist, std::ostream & ost )
 {
         std::vector< int > data;
         char buff[1024];
@@ -34,24 +47,28 @@ void decimal2base58( std::istream & ist, std::ostream & ost )
                 int imax = ist.gcount();
                 for ( int i=0; i<imax; i++ )
                 {
-                        if ( ! std::isdigit( buff[ i ] ) )
-                                continue;
-                        data.push_back( std::stoi( std::string( 1, buff[ i ] ) )    );
+                        if ( buff[ i ] == '\n' ) break;
+                        int tmp = hLetter( buff[ i ] );
+                        if ( tmp == -1 ) throw "chyba inputu";
+                        data.push_back( tmp );
                 }
+
         } while ( ! ist.eof() );
 
-        std::vector< int > outputnum( (int) (0.5671 * data.size()) + 1 , 0 );
+        if ( data.back() == (int) '\n' )
+                data.pop_back();
+
+        std::vector< int > outputnum( (int) (0.6829 * data.size()) + 1 , 0 );
 
         for ( auto inp=data.cbegin(); inp != data.cend(); inp ++ )
         {
                 int carry(*inp);
                 for ( auto oup=outputnum.begin(); oup != outputnum.end(); oup++ )
                 {
-                        (*oup) *= 10;
+                        (*oup) *= 16;
                         (*oup) += carry;
                         carry = (*oup) / 58;
                         (*oup) %= 58;
-                        //std::cout << "-----" << i << "<<<<<";
                 }
         }
         auto inp=outputnum.crbegin();
@@ -63,8 +80,10 @@ void decimal2base58( std::istream & ist, std::ostream & ost )
         }
         ost << std::endl;
 }
+*/
 
-void base58toDecimal( std::istream & ist, std::ostream & ost )
+
+void base58toCzech( std::istream & ist, std::ostream & ost )
 {
         std::vector< int > data;
         char buff[1024];
@@ -87,7 +106,7 @@ void base58toDecimal( std::istream & ist, std::ostream & ost )
 
         } while ( ! ist.eof() );
 
-        std::vector< int > outputnum( (int) (1.7635 * data.size()) + 1 , 0 );
+        std::vector< int > outputnum( (int) (0.5326 * data.size()) + 1 , 0 );
 
         for ( auto inp=data.cbegin(); inp != data.cend(); inp ++ )
         {
@@ -96,17 +115,27 @@ void base58toDecimal( std::istream & ist, std::ostream & ost )
                 {
                         (*oup) *= 58;
                         (*oup) += carry;
-                        carry = (*oup) / 10;
-                        (*oup) %= 10;
+                        carry = (*oup) / 2048;
+                        (*oup) %= 2048;
                 }
         }
         auto inp=outputnum.crbegin();
-        while ( *inp == 0 ) inp++;
-        while ( inp != outputnum.crend() )
+        while ( *inp == 0 )
         {
-                ost << *inp;
+                if ( inp == outputnum.crend() )
+                {
+                        ost << bip_czech[0] << std::endl;
+			return;
+                }
                 inp++;
+        }
+        while ( true )
+        {
+                ost << bip_czech[ *inp ] ;
+                inp++;
+                if ( inp == outputnum.crend() )
+                        break;
+                ost << " ";
         }
         ost << std::endl;
 }
-

@@ -54,7 +54,15 @@ void ascii2base58( std::istream & ist, std::ostream & ost )
                 }
         }
         auto inp=outputnum.crbegin();
-        while ( *inp == 0 ) inp++;
+        while ( *inp == 0 )
+        {
+                if ( inp == outputnum.crend() )
+                {
+                        ost << 1;
+                        break;
+                }
+                inp++;
+        }
         while ( inp != outputnum.crend() )
         {
                 ost << b58[ *inp ];
@@ -100,7 +108,15 @@ void base58toAscii( std::istream & ist, std::ostream & ost )
                 }
         }
         auto inp=outputnum.crbegin();
-        while ( *inp == 0 ) inp++;
+        while ( *inp == 0 )
+        {
+                if ( inp == outputnum.crend() )
+                {
+                        ost << (char) 0;
+                        break;
+                }
+                inp++;
+        }
         while ( inp != outputnum.crend() )
         {
                 ost << (char) *inp;

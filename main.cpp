@@ -4,12 +4,13 @@
 #include "ascii2base58.h"
 #include "dec2base58.h"
 #include "hex2base58.h"
+#include "bip39toBase58.h"
 
 
 
 enum class base
 {
-        DEC, HEX, B58, ASC
+        DEC, HEX, B58, ASC, BIP
 };
 
 int main(int argc, char * argv[] )
@@ -27,8 +28,8 @@ int main(int argc, char * argv[] )
                         {
                                 case 'h':
                                         std::cout << "usage:\t" << argv[0] << " <input enc> <outputenc>\n\t"<< argv[0] << " "
-                                                << "[ -h ] [ -d | -a | -x | -b ] [ -d | -a | -x | -b ]\n"
-                                                << "\th: help\n\td: decimal\n\ta: ASCII\n\tx:hexadecimal\n\tb: base58\n\t"
+                                                << "[ -h ] [ -d | -a | -x | -b ] [ -d | -a | -x | -b | -c ]\n"
+                                                << "\th: help\n\td: decimal\n\ta: ASCII\n\tx:hexadecimal\n\tb: base58\n\tc: czech BIP39\n\t"
                                                 << "default: hexadecimal -> base58" << std::endl;
                                         return 0;
                                 case 'd':
@@ -42,6 +43,9 @@ int main(int argc, char * argv[] )
                                         break;
                                 case 'a':
                                         (first ? inp : oup) = base::ASC;
+                                        break;
+                                case 'c':
+                                        if ( ! first ) oup = base::BIP;
                                         break;
                                 default:
                                         std::cerr << "invalid option" << std::endl;
@@ -61,6 +65,7 @@ int main(int argc, char * argv[] )
 // void base58toDecimal( std::istream & ist, std::ostream & ost );
 // void hexa2base58( std::istream & ist, std::ostream & ost );
 // void base58toHexadecimal( std::istream & ist, std::ostream & ost );
+// void base58toCzech( std::istream & ist, std::ostream & ost );
 
 //#define DEBUG
 
@@ -81,6 +86,8 @@ int main(int argc, char * argv[] )
                 case base::B58:
                         tmpstr = & std::cin;
                         break;
+                case base::BIP:
+                        ascii2base58 ( std::cin, tmp );
         }
 
         switch ( oup )
@@ -93,6 +100,9 @@ int main(int argc, char * argv[] )
                         break;
                 case base::ASC:
                         base58toAscii ( *tmpstr, std::cout );
+                        break;
+                case base::BIP:
+                        base58toCzech ( *tmpstr, std::cout );
                         break;
                 case base::B58:
                         std::string ts;
