@@ -1,0 +1,2 @@
+The container is accessed (neither the const nor the non-const versions modify the container).
+The reference returned can be used to access or modify elements. Concurrently accessing or modifying different elements is safe.
