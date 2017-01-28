@@ -25,10 +25,15 @@ int main(int argc, char * argv[] )
                         switch ( argv[i][1] )
                         {
                                 case 'h':
-                                        std::cout << "usage:\t" << argv[0] << " <input enc> <outputenc>\n\t"<< argv[0] << " "
-                                                << "[ -h ] [ -d | -a | -x | -b | -c | -e ] [ -d | -a | -x | -b | -c | -e ]\n"
-                                                << "\th: help\n\td: decimal\n\ta: ASCII\n\tx:hexadecimal\n\t"
-                                                << "b: base58\n\tc: czech BIP39\n\te: english BIP39\n\t"
+                                        std::cout << "usage:\t" << argv[0]
+                                                << " <input enc> <outputenc>\n\t"
+                                                << "reads from stdin and writes to stdout\n\t"
+                                                << argv[0] << " "
+                                                << "[ -h ] [ -d | -a | -x | -b | -c | -e ]"
+                                                <<" [ -d | -a | -x | -b | -c | -e ]\n"
+                                                << "\th: help\n\td: decimal\n\ta: ASCII\n\t"
+                                                << "x: hexadecimal\n\tb: base58\n\t"
+                                                << "c: czech BIP39\n\te: english BIP39\n\t"
                                                 << "default: hexadecimal -> base58" << std::endl;
                                         return 0;
                                 case 'd':
