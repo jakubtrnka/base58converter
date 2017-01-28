@@ -4,7 +4,7 @@
 
 namespace
 {
-        const char * b58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+	const char * b58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 
         int bLetter( const char c )
         {
@@ -19,7 +19,7 @@ namespace
         }
 }
 
-void ascii2base58( std::istream & ist, std::ostream & ost )
+void dec2base58( std::istream & ist, std::ostream & ost )
 {
         std::vector< int > data;
         char buff[1024];
@@ -33,24 +33,25 @@ void ascii2base58( std::istream & ist, std::ostream & ost )
                 ist.read( buff, 1024 );
                 int imax = ist.gcount();
                 for ( int i=0; i<imax; i++ )
-                        data.push_back( (int) buff[ i ] );
-
+                {
+                        if ( ! std::isdigit( buff[ i ] ) )
+                                continue;
+                        data.push_back( std::stoi( std::string( 1, buff[ i ] ) )    );
+                }
         } while ( ! ist.eof() );
 
-        if ( data.back() == (int) '\n' )
-                data.pop_back();
-
-        std::vector< int > outputnum( (int) (1.3657 * data.size()) + 1 , 0 );
+        std::vector< int > outputnum( (int) (0.5671 * data.size()) + 1 , 0 );
 
         for ( auto inp=data.cbegin(); inp != data.cend(); inp ++ )
         {
                 int carry(*inp);
                 for ( auto oup=outputnum.begin(); oup != outputnum.end(); oup++ )
                 {
-                        (*oup) *= 256;
+                        (*oup) *= 10;
                         (*oup) += carry;
                         carry = (*oup) / 58;
                         (*oup) %= 58;
+                        //std::cout << "-----" << i << "<<<<<";
                 }
         }
         auto inp=outputnum.crbegin();
@@ -63,7 +64,7 @@ void ascii2base58( std::istream & ist, std::ostream & ost )
         ost << std::endl;
 }
 
-void base58toAscii( std::istream & ist, std::ostream & ost )
+void base58toDec( std::istream & ist, std::ostream & ost )
 {
         std::vector< int > data;
         char buff[1024];
@@ -86,7 +87,7 @@ void base58toAscii( std::istream & ist, std::ostream & ost )
 
         } while ( ! ist.eof() );
 
-        std::vector< int > outputnum( (int) (0.7323 * data.size()) + 1 , 0 );
+        std::vector< int > outputnum( (int) (1.7635 * data.size()) + 1 , 0 );
 
         for ( auto inp=data.cbegin(); inp != data.cend(); inp ++ )
         {
@@ -95,15 +96,15 @@ void base58toAscii( std::istream & ist, std::ostream & ost )
                 {
                         (*oup) *= 58;
                         (*oup) += carry;
-                        carry = (*oup) / 256;
-                        (*oup) %= 256;
+                        carry = (*oup) / 10;
+                        (*oup) %= 10;
                 }
         }
         auto inp=outputnum.crbegin();
         while ( *inp == 0 ) inp++;
         while ( inp != outputnum.crend() )
         {
-                ost << (char) *inp;
+                ost << *inp;
                 inp++;
         }
         ost << std::endl;

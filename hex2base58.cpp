@@ -32,7 +32,7 @@ namespace
         }
 }
 
-void hexa2base58( std::istream & ist, std::ostream & ost )
+void hex2base58( std::istream & ist, std::ostream & ost )
 {
         std::vector< int > data;
         char buff[1024];
@@ -50,7 +50,7 @@ void hexa2base58( std::istream & ist, std::ostream & ost )
                         if ( buff[ i ] == '\n' ) break;
                         int tmp = hLetter( buff[ i ] );
                         if ( tmp == -1 ) throw "chyba inputu";
-                        data.push_back( (int) buff[ i ] );
+                        data.push_back( tmp );
                 }
 
         } while ( ! ist.eof() );
@@ -69,7 +69,6 @@ void hexa2base58( std::istream & ist, std::ostream & ost )
                         (*oup) += carry;
                         carry = (*oup) / 58;
                         (*oup) %= 58;
-                        //std::cout << "-----" << i << "<<<<<";
                 }
         }
         auto inp=outputnum.crbegin();
@@ -83,7 +82,7 @@ void hexa2base58( std::istream & ist, std::ostream & ost )
 }
 
 
-void base58toHexadecimal( std::istream & ist, std::ostream & ost )
+void base58toHex( std::istream & ist, std::ostream & ost )
 {
         std::vector< int > data;
         char buff[1024];

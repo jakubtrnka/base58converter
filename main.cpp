@@ -2,7 +2,7 @@
 #include <sstream>
 
 #include "ascii2base58.h"
-#include "decimal2base58.h"
+#include "dec2base58.h"
 #include "hex2base58.h"
 
 
@@ -15,9 +15,8 @@ enum class base
 int main(int argc, char * argv[] )
 {
 
-        std::stringstream tmp;
-        std::istream * tmpstr = & tmp;
         base inp(base::HEX), oup(base::B58);
+
         bool first=true;
 
         for ( int i=1; i<argc; i++ )
@@ -33,16 +32,16 @@ int main(int argc, char * argv[] )
                                                 << "default: hexadecimal -> base58" << std::endl;
                                         return 0;
                                 case 'd':
-                                        first ? inp : oup = base::DEC;
+                                        (first ? inp : oup) = base::DEC;
                                         break;
                                 case 'x':
-                                        first ? inp : oup = base::HEX;
+                                        (first ? inp : oup) = base::HEX;
                                         break;
                                 case 'b':
-                                        first ? inp : oup = base::B58;
+                                        (first ? inp : oup) = base::B58;
                                         break;
                                 case 'a':
-                                        first ? inp : oup = base::ASC;
+                                        (first ? inp : oup) = base::ASC;
                                         break;
                                 default:
                                         std::cerr << "invalid option" << std::endl;
@@ -54,6 +53,7 @@ int main(int argc, char * argv[] )
                                 return 1;
                         }
                 }
+                first = false;
         }
 // void ascii2base58( std::istream & ist, std::ostream & ost );
 // void base58toAscii( std::istream & ist, std::ostream & ost );
@@ -62,22 +62,23 @@ int main(int argc, char * argv[] )
 // void hexa2base58( std::istream & ist, std::ostream & ost );
 // void base58toHexadecimal( std::istream & ist, std::ostream & ost );
 
+//#define DEBUG
+
+#ifndef DEBUG
+        std::stringstream tmp;
+        std::istream * tmpstr = & tmp;
         switch ( inp )
         {
                 case base::HEX:
-                        std::cout <<"h\n";
-                        hexa2base58 ( std::cin, tmp );
+                        hex2base58 ( std::cin, tmp );
                         break;
                 case base::DEC:
-                        std::cout <<"d\n";
-                        decimal2base58 ( std::cin, tmp );
+                        dec2base58 ( std::cin, tmp );
                         break;
                 case base::ASC:
-                        std::cout <<"a\n";
                         ascii2base58 ( std::cin, tmp );
                         break;
                 case base::B58:
-                        std::cout <<"b\n";
                         tmpstr = & std::cin;
                         break;
         }
@@ -85,10 +86,10 @@ int main(int argc, char * argv[] )
         switch ( oup )
         {
                 case base::HEX:
-                        base58toHexadecimal ( *tmpstr, std::cout );
+                        base58toHex ( *tmpstr, std::cout );
                         break;
                 case base::DEC:
-                        base58toDecimal ( *tmpstr, std::cout );
+                        base58toDec ( *tmpstr, std::cout );
                         break;
                 case base::ASC:
                         base58toAscii ( *tmpstr, std::cout );
@@ -96,10 +97,23 @@ int main(int argc, char * argv[] )
                 case base::B58:
                         std::string ts;
                         *tmpstr >> ts;
-                        std::cout << ts;
+                        std::cout << ts << std::endl ;
                         break;
 
         }
+
+#else
+
+        try
+        {
+                base58toAscii ( std::cin, std::cout );
+        }
+        catch (const char * s)
+        {
+                std::cout << s << std::endl;
+        }
+
+#endif
 
         return 0;
 }
