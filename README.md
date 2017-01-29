@@ -8,8 +8,12 @@ Bitcoin [base58](https://en.wikipedia.org/wiki/Base58) is representation, where 
 
 ### Basic usage:
 `converter [<input enc>] [<outputenc>]`
-converter [ -h ]
-each `<input enc>` and `<output enc>` can take form of `[ -d | -a | -x | -b | -c | -e ]` options
+
+`converter [ -h ]`
+
+Each `<input enc>` and `<output enc>` can be one of
+
+`-d`, `-a`, `-x`, `-b`, `-c`, `-e` options
 which sets the input and output encodings. Reading hexadecimal and BIP format is case insensitive. If only one encoding is given, then the output encoding is `base58`. If no encoding is given, default conversion is from hexadecimal to base58.
 
 | Option | Meaning      |
@@ -22,4 +26,3 @@ which sets the input and output encodings. Reading hexadecimal and BIP format is
 | -c    | czech BIP39  |
 | -e    | english BIP39 |
 | default | hexadecimal -> base58  |
-
