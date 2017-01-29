@@ -11,6 +11,7 @@ Bitcoin [base58](https://en.wikipedia.org/wiki/Base58) is representation, where 
 converter [ -h ]
 each `<input enc>` and `<output enc>` can take form of `[ -d | -a | -x | -b | -c | -e ]` options
 which sets the input and output encodings. Reading hexadecimal and BIP format is case insensitive. If only one encoding is given, then the output encoding is `base58`. If no encoding is given, default conversion is from hexadecimal to base58.
+
 | Option | Meaning      |
 | ----- | :-------     |
 | -h    | help         |
