@@ -7,22 +7,33 @@ Two special bases given by standard [BIP39](https://github.com/bitcoin/bips/blob
 Bitcoin [base58](https://en.wikipedia.org/wiki/Base58) is representation, where each digit encodes one of 58 symbols (`123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz` where `1` is for zero, `2` for one etc. and `z` for 57). The idea is to make use of every digit and every letter lowercase and uppercase excluding similar characters `0`, `O`, `I` and `l`.
 
 ### Basic usage:
-`converter [<input enc>] [<outputenc>]`
+`converter -ij`
 
-`converter [ -h ]`
+`converter  -h `
 
-Each `<input enc>` and `<output enc>` can be one of
 
-`-d`, `-a`, `-x`, `-b`, `-c`, `-e` options
-which sets the input and output encodings. Reading hexadecimal and BIP format is case insensitive. If only one encoding is given, then the output encoding is `base58`. If no encoding is given, default conversion is from hexadecimal to base58.
+Where `ij` are input/output parameters.
 
-| Option | Meaning      |
-| ----- | :-------     |
-| -h    | help         |
-| -d    | decimal      |
-| -a    | ASCII        |
-| -x    | hexadecimal  |
-| -b    | base58       |
-| -c    | czech BIP39  |
-| -e    | english BIP39 |
-| default | hexadecimal -> base58  |
+
+| -ij  | input enc.    | output enc      |
+| -----| :------------ |:--------------- |
+| -ax  | ascii         |  base16         |
+| -dx  | base10        |  base16         |
+| -db  | base10        |  base58         |
+| -dc  | base10        |  czech mnemo    |
+| -de  | base10        |  english mnemo  |
+| -xa  | base16        |  ascii          |
+| -xd  | base16        |  base10         |
+| -xb  | base16        |  base58         |
+| -xc  | base16        |  czech mnemo    |
+| -xe  | base16        |  english mnemo  |
+| -bx  | base58        |  base16         |
+| -bd  | base58        |  base10         |
+| -be  | base58        |  english mnemo  |
+| -cx  | czech mnemo   |  base16         |
+| -cd  | czech mnemo   |  base10         |
+| -ce  | czech mnemo   |  english mnemo  |
+| -ex  | english mnemo |  base16         |
+| -eb  | english mnemo |  base58         |
+| -ed  | english mnemo |  base10         |
+| -h   | help          |  none           |
