@@ -15,6 +15,31 @@ int main( int argc, char * argv[] )
                         std::cerr << "Invalid option\n";
                         return 1;
                 }
+                if ( argv[1][1] == 'h' )
+                {
+                        std::cout <<
+                                "\tpossoble conversions:\n\t\t"
+                                "-ax  ascii  --------->  base16       \n\t\t"
+                                "-dx  base10   ------->  base16       \n\t\t"
+                                "-db  base10   ------->  base58       \n\t\t"
+                                "-dc  base10   ------->  czech mnemo  \n\t\t"
+                                "-de  base10   ------->  english mnemo\n\t\t"
+                                "-xa  base16 --------->  ascii        \n\t\t"
+                                "-xd  base16   ------->  base10       \n\t\t"
+                                "-xb  base16   ------->  base58       \n\t\t"
+                                "-xc  base16   ------->  czech mnemo  \n\t\t"
+                                "-xe  base16   ------->  english mnemo\n\t\t"
+                                "-bx  base58 --------->  base16       \n\t\t"
+                                "-bd  base58   ------->  base10       \n\t\t"
+                                "-be  base58   ------->  english mnemo\n\t\t"
+                                "-cx  czech mnemo ---->  base16       \n\t\t"
+                                "-cd  czech mnemo ---->  base10       \n\t\t"
+                                "-ce  czech mnemo ---->  english mnemo\n\t\t"
+                                "-ex  english mnemo -->  base16       \n\t\t"
+                                "-eb  english mnemo -->  base58       \n\t\t"
+                                "-ed  english mnemo -->  base10" << std::endl;
+                        return 0;
+                }
                 if ( argv[1][1] == '\0' || argv[1][2] == '\0'  )
                 {
                         std::cerr << "Invalid option\n";
