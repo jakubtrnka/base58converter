@@ -1,126 +1,98 @@
 #include <iostream>
-#include <sstream>
 
-#include "ascii2base58.h"
-#include "dec2base58.h"
-#include "hex2base58.h"
-#include "bip39toBase58.h"
+#include "converter.h"
 
-enum class base
+#define pol( x, y ) ( ( (int) (x)) * 256 + (int)(y) )
+
+
+int main( int argc, char * argv[] )
 {
-        DEC, HEX, B58, ASC, BIPC, BIPE
-};
-
-int main(int argc, char * argv[] )
-{
-
-        base inp(base::HEX), oup(base::B58);
-
-        bool first=true;
-
-        for ( int i=1; i<argc; i++ )
+        int settings(0);
+        if ( argc > 1 )
         {
-                if ( argv[i][0] == '-' )
+                if ( argv[1][0] != '-' )
                 {
-                        switch ( argv[i][1] )
-                        {
-                                case 'h':
-                                        std::cout << "usage:\t" << argv[0]
-                                                << " <input enc> <outputenc>\n\t"
-                                                << "reads from stdin and writes to stdout\n\t"
-                                                << argv[0] << " "
-                                                << "[ -h ] [ -d | -a | -x | -b | -c | -e ]"
-                                                <<" [ -d | -a | -x | -b | -c | -e ]\n"
-                                                << "\th: help\n\td: decimal\n\ta: ASCII\n\t"
-                                                << "x: hexadecimal\n\tb: base58\n\t"
-                                                << "c: czech BIP39\n\te: english BIP39\n\t"
-                                                << "default: hexadecimal -> base58" << std::endl;
-                                        return 0;
-                                case 'd':
-                                        (first ? inp : oup) = base::DEC;
-                                        break;
-                                case 'x':
-                                        (first ? inp : oup) = base::HEX;
-                                        break;
-                                case 'b':
-                                        (first ? inp : oup) = base::B58;
-                                        break;
-                                case 'a':
-                                        (first ? inp : oup) = base::ASC;
-                                        break;
-                                case 'c':
-                                        (first ? inp : oup) = base::BIPC;
-                                        break;
-                                case 'e':
-                                        (first ? inp : oup) = base::BIPE;
-                                        break;
-                                default:
-                                        std::cerr << "invalid option" << std::endl;
-                                        return 1;
-                        }
-                        if (argv[i][2] != '\0')
-                        {
-                                std::cerr << "invalid option" << std::endl;
-                                return 1;
-                        }
+                        std::cerr << "Invalid option\n";
+                        return 1;
                 }
-                first = false;
+                if ( argv[1][1] == '\0' || argv[1][2] == '\0'  )
+                {
+                        std::cerr << "Invalid option\n";
+                        return 1;
+                }
+                settings = argv[1][1] * 256 + argv[1][2];
         }
 
-        std::stringstream tmp;
-        std::istream * tmpstr = & tmp;
-        try
-        {
-                switch ( inp )
+
+        try {
+                switch ( settings )
                 {
-                        case base::HEX:
-                                hex2base58 ( std::cin, tmp );
-                                break;
-                        case base::DEC:
-                                dec2base58 ( std::cin, tmp );
-                                break;
-                        case base::ASC:
-                                ascii2base58 ( std::cin, tmp );
-                                break;
-                        case base::B58:
-                                tmpstr = & std::cin;
-                                break;
-                        case base::BIPC:
-                                czech2base58 ( std::cin, tmp );
-                                break;
-                        case base::BIPE:
-                                eng2base58 ( std::cin, tmp );
-                                break;
+                        case pol('a','x'):
+                               ascii2b16(std::cin, std::cout );
+                               break;
+                        case pol('d','x'):
+                               b10toB16( std::cin, std::cout );
+                               break;
+                        case pol('x','a'):
+                               b16toAscii(std::cin, std::cout );
+                               break;
+                        case pol('x','d'):
+                               b16toB10( std::cin, std::cout );
+                               break;
+                        case pol('x','b'):
+                               b16toB58( std::cin, std::cout );
+                               break;
+                        case pol('x','c'):
+                               b16toCze( std::cin, std::cout );
+                               break;
+                        case pol('x','e'):
+                               b16toEng( std::cin, std::cout );
+                               break;
+                        case pol('b','x'):
+                               b58toB16( std::cin, std::cout );
+                               break;
+                        case pol('b','d'):
+                               b58toDec( std::cin, std::cout );
+                               break;
+                        case pol('b','e'):
+                               b58toEng( std::cin, std::cout );
+                               break;
+                        case pol('c','x'):
+                               cze2b16 ( std::cin, std::cout );
+                               break;
+                        case pol('c','d'):
+                               cze2dec ( std::cin, std::cout );
+                               break;
+                        case pol('c','e'):
+                               cze2eng ( std::cin, std::cout );
+                               break;
+                        case pol('d','b'):
+                               dec2b58 ( std::cin, std::cout );
+                               break;
+                        case pol('d','c'):
+                               dec2cze ( std::cin, std::cout );
+                               break;
+                        case pol('d','e'):
+                               dec2eng ( std::cin, std::cout );
+                               break;
+                        case pol('e','x'):
+                               eng2b16 ( std::cin, std::cout );
+                               break;
+                        case pol('e','b'):
+                               eng2b58 ( std::cin, std::cout );
+                               break;
+                        case pol('e','d'):
+                               eng2dec ( std::cin, std::cout );
+                               break;
+                        default:
+                               std::cerr << "invalid parameter" << std::endl;
+                               return 1;
                 }
-        } catch ( const char * s )
-        {
-                std::cerr << s << std::endl;
-                return 1;
+
         }
-
-        switch ( oup )
+        catch ( const char *s )
         {
-                case base::HEX:
-                        base58toHex ( *tmpstr, std::cout );
-                        break;
-                case base::DEC:
-                        base58toDec ( *tmpstr, std::cout );
-                        break;
-                case base::ASC:
-                        base58toAscii ( *tmpstr, std::cout );
-                        break;
-                case base::BIPC:
-                        base58toCzech ( *tmpstr, std::cout );
-                        break;
-                case base::BIPE:
-                        base58toEng ( *tmpstr, std::cout );
-                        break;
-                case base::B58:
-                        std::string ts;
-                        *tmpstr >> ts;
-                        std::cout << ts << std::endl ;
-                        break;
-
+                std::cout << s << std::endl;
         }
         return 0;
 }
