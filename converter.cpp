@@ -61,7 +61,7 @@ void cze2eng ( std::istream & ist, std::ostream & ost )
 
 void eng2b58 ( std::istream & ist, std::ostream & ost )
 {
-        alfa2beta( std::cin, std::cout, baseBIP39::readEng, 2048, 10, 1.8778, base58::write );
+        alfa2beta( std::cin, std::cout, baseBIP39::readEng, 2048, 58, 1.8778, base58::write );
 }
 
 void b58toEng ( std::istream & ist, std::ostream & ost )
