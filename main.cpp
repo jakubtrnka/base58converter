@@ -4,53 +4,37 @@
 
 #define pol( x, y ) ( ( (int) (x)) * 256 + (int)(y) )
 
-
-int main( int argc, char * argv[] )
+namespace
 {
-        int settings(0);
-        if ( argc > 1 )
+        void printHelp( std::ostream & ost )
         {
-                if ( argv[1][0] != '-' )
-                {
-                        std::cerr << "Invalid option\n";
-                        return 1;
-                }
-                if ( argv[1][1] == 'h' )
-                {
-                        std::cout <<
-                                "\tpossoble conversions:\n\t\t"
-                                "-ax  ascii  --------->  base16       \n\t\t"
-                                "-dx  base10   ------->  base16       \n\t\t"
-                                "-db  base10   ------->  base58       \n\t\t"
-                                "-dc  base10   ------->  czech mnemo  \n\t\t"
-                                "-de  base10   ------->  english mnemo\n\t\t"
-                                "-xa  base16 --------->  ascii        \n\t\t"
-                                "-xd  base16   ------->  base10       \n\t\t"
-                                "-xb  base16   ------->  base58       \n\t\t"
-                                "-xc  base16   ------->  czech mnemo  \n\t\t"
-                                "-xe  base16   ------->  english mnemo\n\t\t"
-                                "-bx  base58 --------->  base16       \n\t\t"
-                                "-bd  base58   ------->  base10       \n\t\t"
-                                "-be  base58   ------->  english mnemo\n\t\t"
-                                "-cx  czech mnemo ---->  base16       \n\t\t"
-                                "-cd  czech mnemo ---->  base10       \n\t\t"
-                                "-ce  czech mnemo ---->  english mnemo\n\t\t"
-                                "-ex  english mnemo -->  base16       \n\t\t"
-                                "-eb  english mnemo -->  base58       \n\t\t"
-                                "-ed  english mnemo -->  base10" << std::endl;
-                        return 0;
-                }
-                if ( argv[1][1] == '\0' || argv[1][2] == '\0'  )
-                {
-                        std::cerr << "Invalid option\n";
-                        return 1;
-                }
-                settings = argv[1][1] * 256 + argv[1][2];
+               ost <<
+                       "\t\t-n   prints newline in the end\n"
+                       "\tpossoble conversions:\n\t\t"
+                       "-ax  ascii  --------->  base16       \n\t\t"
+                       "-dx  base10   ------->  base16       \n\t\t"
+                       "-db  base10   ------->  base58       \n\t\t"
+                       "-dc  base10   ------->  czech mnemo  \n\t\t"
+                       "-de  base10   ------->  english mnemo\n\t\t"
+                       "-xa  base16 --------->  ascii        \n\t\t"
+                       "-xd  base16   ------->  base10       \n\t\t"
+                       "-xb  base16   ------->  base58       \n\t\t"
+                       "-xc  base16   ------->  czech mnemo  \n\t\t"
+                       "-xe  base16   ------->  english mnemo\n\t\t"
+                       "-bx  base58 --------->  base16       \n\t\t"
+                       "-bd  base58   ------->  base10       \n\t\t"
+                       "-be  base58   ------->  english mnemo\n\t\t"
+                       "-cx  czech mnemo ---->  base16       \n\t\t"
+                       "-cd  czech mnemo ---->  base10       \n\t\t"
+                       "-ce  czech mnemo ---->  english mnemo\n\t\t"
+                       "-ex  english mnemo -->  base16       \n\t\t"
+                       "-eb  english mnemo -->  base58       \n\t\t"
+                       "-ed  english mnemo -->  base10" << std::endl;
         }
 
-
-        try {
-                switch ( settings )
+        void convert( const int sett ) throw ( const char * )
+        {
+                switch ( sett )
                 {
                         case pol('a','x'):
                                ascii2b16(std::cin, std::cout );
@@ -110,9 +94,47 @@ int main( int argc, char * argv[] )
                                eng2dec ( std::cin, std::cout );
                                break;
                         default:
-                               std::cerr << "invalid parameter" << std::endl;
-                               return 1;
+                               throw "Invalid parameter";
                 }
+        }
+}
+
+int main( int argc, char * argv[] )
+{
+        int settings(0);
+        bool newline(false);
+
+        for( int iarg=1; iarg<argc; iarg ++ ) 
+        {
+                if ( argv[iarg][0] != '-' )
+                {
+                        std::cerr << "Invalid option\n";
+                        return 1;
+                }
+                else if ( argv[iarg][1] == '\0' )
+                {
+                        std::cerr << "Invalid option\n";
+                        return 1;
+                }
+                if ( argv[iarg][1] == 'h' && argv[iarg][2] == '\0' )
+                {
+                        printHelp( std::cout );
+                        return 0;
+                }
+                else if ( argv[iarg][1] == 'n' && argv[iarg][2] == '\0' )
+                {
+                        newline = true;
+                        continue;
+                }
+                else if ( argv[iarg][2] != '\0' )
+                        settings = argv[iarg][1] * 256 + argv[iarg][2];
+        }
+
+
+        try
+        {
+                convert( settings );
+                if ( newline ) std::cout << std::endl;
 
         }
         catch ( const char *s )
