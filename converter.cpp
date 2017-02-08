@@ -49,7 +49,7 @@ void alfa2beta( std::istream & ist, std::ostream & ost,
                 writeDigits( * inp, ost );
                 inp++;
         }
-        ost << std::endl;
+        //ost << std::endl;
 }
 
 void cze2eng ( std::istream & ist, std::ostream & ost )
