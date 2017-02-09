@@ -10,13 +10,19 @@ Bitcoin [base58](https://en.wikipedia.org/wiki/Base58) is representation, where 
 `converter -ij`
 
 `converter  -h `
+prints help message
 
+`converter -ij -n`  
+`converter -n -ij` 
+prints newline to the output
 
 Where `ij` are input/output parameters.
 
 
 | -ij  | input enc.    | output enc      |
 | -----| :------------ |:--------------- |
+| -ac  | ascii         |  czech mnemo    |
+| -ae  | ascii         |  english mnemo  |
 | -ax  | ascii         |  base16         |
 | -dx  | base10        |  base16         |
 | -db  | base10        |  base58         |
@@ -37,3 +43,4 @@ Where `ij` are input/output parameters.
 | -eb  | english mnemo |  base58         |
 | -ed  | english mnemo |  base10         |
 | -h   | help          |  none           |
+| -n   | prints newline |                |
