@@ -104,6 +104,15 @@ void b58toDec ( std::istream & ist, std::ostream & ost )
 }
 
 /***************************************************************************************/
+void ascii2eng ( std::istream & ist, std::ostream & ost )
+{
+        alfa2beta( ist, ost, baseASCII::read, 256, 2048, 0.7273, baseBIP39::writeEng );
+}
+
+void ascii2cze ( std::istream & ist, std::ostream & ost )
+{
+        alfa2beta( ist, ost, baseASCII::read, 256, 2048, 0.7273, baseBIP39::writeCze );
+}
 
 void ascii2b16 ( std::istream & ist, std::ostream & ost )
 {

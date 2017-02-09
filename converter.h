@@ -32,5 +32,6 @@ void b16toB10 ( std::istream & ist, std::ostream & ost );
 void b16toCze ( std::istream & ist, std::ostream & ost );
 void b16toEng ( std::istream & ist, std::ostream & ost );
 void b16toAscii ( std::istream & ist, std::ostream & ost );
-
+void ascii2eng ( std::istream & ist, std::ostream & ost );
+void ascii2cze ( std::istream & ist, std::ostream & ost );
 #endif

@@ -11,6 +11,8 @@ namespace
                ost <<
                        "\t\t-n   prints newline in the end\n"
                        "\tpossoble conversions:\n\t\t"
+                       "-ac  ascii  --------->  czech mnemo  \n\t\t"
+                       "-ae  ascii  --------->  english mnemo\n\t\t"
                        "-ax  ascii  --------->  base16       \n\t\t"
                        "-dx  base10   ------->  base16       \n\t\t"
                        "-db  base10   ------->  base58       \n\t\t"
@@ -36,6 +38,12 @@ namespace
         {
                 switch ( sett )
                 {
+                        case pol('a','c'):
+                               ascii2cze(std::cin, std::cout );
+                               break;
+                        case pol('a','e'):
+                               ascii2eng(std::cin, std::cout );
+                               break;
                         case pol('a','x'):
                                ascii2b16(std::cin, std::cout );
                                break;
