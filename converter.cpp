@@ -23,15 +23,23 @@ void alfa2beta( std::istream & ist, std::ostream & ost,
         //container for output sequence
         std::vector< int > outputnum( (int) (extensionFactor * data.size()) + 2 , 0 );
 
+        auto oupMax = outputnum.begin() + 1;
+
         for ( auto inp=data.cbegin(); inp != data.cend(); inp ++ )
         {
                 int carry(*inp);
-                for ( auto oup=outputnum.begin(); oup != outputnum.end(); oup++ )
+                
+                //for ( auto oup=outputnum.begin(); oup != outputnum.end(); oup++ )
+                for ( auto oup=outputnum.begin(); oup != oupMax; )
                 {
                         (*oup) *= from;
                         (*oup) += carry;
                         carry = (*oup) / to;
                         (*oup) %= to;
+                        oup ++;
+                        if ( oup == oupMax )
+                                if ( carry != 0 )
+                                        oupMax ++;
                 }
         }
         auto inp=outputnum.crbegin();
