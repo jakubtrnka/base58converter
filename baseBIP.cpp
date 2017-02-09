@@ -860,7 +860,7 @@ namespace baseBIP39
 
         int  findSymbol( const char *s , const char * where[] ) 
         {
-                for ( int i=0; i< 2047; i++ )
+                for ( int i=0; i< 2048; i++ )
                 {
                         if ( std::strncmp( s, where[i], 4 ) == 0 )
                                 return i;
